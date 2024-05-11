@@ -1,0 +1,33 @@
+{
+  "name": "projeto-02",
+  "version": "1.0.0",
+  "description": "GymPass style app.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "node build/server.js",
+    "build": "tsup src --out-dir build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rocketseat/eslint-config": "2.2.2",
+    "@types/bcryptjs": "2.4.6",
+    "@types/node": "20.12.8",
+    "eslint": "8.57.0",
+    "prisma": "5.13.0",
+    "tsup": "8.0.2",
+    "tsx": "4.9.1",
+    "typescript": "5.4.5"
+  },
+  "dependencies": {
+    "@prisma/client": "5.13.0",
+    "bcrypt": "5.1.1",
+    "bcryptjs": "2.4.3",
+    "dotenv": "16.4.5",
+    "fastify": "4.26.2",
+    "prettier-eslint": "16.3.0",
+    "zod": "3.23.6"
+  }
+}
