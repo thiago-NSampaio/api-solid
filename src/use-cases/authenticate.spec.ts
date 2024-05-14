@@ -1,13 +1,19 @@
-import {expect, describe, it} from 'vitest'
+import {expect, describe, it, beforeEach} from 'vitest'
 import { hash } from 'bcryptjs'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { AuthenticateUseCase } from './authenticate'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
+let usersRepository: InMemoryUsersRepository
+let sut: AuthenticateUseCase
+
 describe('Register Use Case',()=>{
+    beforeEach(()=>{
+        usersRepository = new InMemoryUsersRepository()
+        sut = new AuthenticateUseCase(usersRepository)
+    })
     it('should be able to autenticate', async () =>{
-        const usersRepository = new InMemoryUsersRepository()
-        const stu = new AuthenticateUseCase(usersRepository)
+        
 
         await usersRepository.create({
             name: 'Jonh Doe',
@@ -15,7 +21,7 @@ describe('Register Use Case',()=>{
             password_hash: await hash('123456', 6)
         })
 
-        const {user} = await stu.execute({
+        const {user} = await sut.execute({
             email: 'jonhdoe@example.com',
             password: '123456'
         })
@@ -23,10 +29,9 @@ describe('Register Use Case',()=>{
     })
 
     it('should not be able to autenticate with wrong email', async () =>{
-        const usersRepository = new InMemoryUsersRepository()
-        const stu = new AuthenticateUseCase(usersRepository)
+       
 
-        expect(() => stu.execute({
+        expect(() => sut.execute({
             email: 'jonhdoe@example.com',
             password: '123456'
         })
@@ -34,8 +39,7 @@ describe('Register Use Case',()=>{
     })
 
     it('should not be able to autenticate with wrong password', async () =>{
-        const usersRepository = new InMemoryUsersRepository()
-        const stu = new AuthenticateUseCase(usersRepository)
+        
 
         await usersRepository.create({
             name: 'Jonh Doe',
@@ -43,7 +47,7 @@ describe('Register Use Case',()=>{
             password_hash: await hash('123456',6)
         })
 
-        expect(() => stu.execute({
+        expect(() => sut.execute({
             email: 'jonhdoe@example.com',
             password: '1tfy23456'
         })
