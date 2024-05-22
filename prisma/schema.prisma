@@ -43,7 +43,7 @@ model Gym {
   title       String
   description String? // Pode ser nulo
   phone       String?
-  latitute    Decimal
+  latitude    Decimal
   longitude   Decimal
 
   checkIns CheckIn[]

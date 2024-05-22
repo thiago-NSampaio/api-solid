@@ -3,24 +3,27 @@ import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-c
 import { CheckInUseCase } from './check-in'
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 import { Decimal } from '@prisma/client/runtime/library'
+import { ResourceNotFoundError } from './errors/resource-not-foun-error'
+import { MaxNumberOfCheckInsError } from './errors/max-number-of-check-ins-error'
+import { MaxDistanceError } from './errors/max-distance-error'
 
 let checkInsRepository: InMemoryCheckInsRepository
 let gymsRepository: InMemoryGymsRepository
 let sut: CheckInUseCase
 
 describe('Check-in Use Case',()=>{
-    beforeEach(()=>{
+    beforeEach(async()=>{
         checkInsRepository = new InMemoryCheckInsRepository()
         gymsRepository = new InMemoryGymsRepository()
         sut = new CheckInUseCase(checkInsRepository, gymsRepository)
 
-        gymsRepository.items.push({
+        await gymsRepository.create({
             id: 'gym-01',
             title: 'Js gym',
             description: '',
             phone: '',
-            latitute: new Decimal(0),
-            longitude: new Decimal(0),
+            latitude: -2.9930968,
+            longitude: -59.9860592,
         })
 
         // Mocking de datas
@@ -59,7 +62,7 @@ describe('Check-in Use Case',()=>{
                 userLatitude: -2.9930968,
                 userLongitude: -59.9860592
             })
-        ).rejects.toBeInstanceOf(Error)
+        ).rejects.toBeInstanceOf(MaxNumberOfCheckInsError)
     })
 
     it('should be able to check in twice but in different days', async () =>{
@@ -82,4 +85,25 @@ describe('Check-in Use Case',()=>{
 
         expect(checkIn.id).toEqual(expect.any(String))
     })
+
+    it('should not be able to check in on distant gym', async () =>{
+        gymsRepository.items.push({
+            id: 'gym-02',
+            title: 'Js gym',
+            description: '',
+            phone: '',
+            latitude: new Decimal(-3.0295326),
+            longitude: new Decimal(-59.9744248),
+        })
+
+        expect(()=>
+            sut.execute({
+                gymId:'gym-02',
+                userId: 'user-01',
+                userLatitude: -3.1453855,
+                userLongitude: 59.9862389
+              })
+        ).rejects.toBeInstanceOf(MaxDistanceError)
+    })
+
 })
