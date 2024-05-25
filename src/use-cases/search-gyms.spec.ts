@@ -5,7 +5,7 @@ import { SearchgGymsUseCase } from './search-gyms'
 let gymsRepository: InMemoryGymsRepository
 let sut: SearchgGymsUseCase
 
-describe('Fecth User Check-in History Use Case',()=>{
+describe('Search Gyms Use Case',()=>{
     beforeEach(()=>{
         gymsRepository = new InMemoryGymsRepository()
         sut = new SearchgGymsUseCase(gymsRepository)
@@ -38,7 +38,7 @@ describe('Fecth User Check-in History Use Case',()=>{
         ])
     })
 
-    it('should be able fecth paginated check-in history', async () =>{
+    it('should be able search paginated gyms', async () =>{
         for (let i=1; i <= 22; i++){
             await gymsRepository.create({
                 title: `JS Gym ${i}`,
