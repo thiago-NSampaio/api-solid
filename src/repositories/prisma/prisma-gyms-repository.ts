@@ -28,7 +28,9 @@ export class PrismaGymsRepository implements GymsRepository{
                     contains: query
                 }
             },
+            // obtém 20 registros
             take: 20,
+            // paginação dos registros
             skip: (page - 1) * 20
         })
 
