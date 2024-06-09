@@ -1,6 +1,6 @@
-import { app } from "./app";
-import { env } from "./env";
-import "dotenv/config"
+import { app } from './app'
+import { env } from './env'
+import 'dotenv/config'
 // import { PrismaClient } from "@prisma/client";
 
 // const prisma = new PrismaClient();
@@ -12,9 +12,9 @@ import "dotenv/config"
 // });
 app
   .listen({
-    host: "0.0.0.0",
+    host: '0.0.0.0',
     port: env.PORT,
   })
   .then(() => {
-    console.log("Server is running!");
-  });
+    console.log('Server is running!')
+  })
