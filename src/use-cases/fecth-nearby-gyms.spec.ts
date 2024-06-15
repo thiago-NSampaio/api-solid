@@ -32,7 +32,6 @@ describe('Fecth Nearby Gyms Use Case',()=>{
             userLongitude: -9.9860592 
         })
 
-        console.log(gyms)
 
         expect(gyms).toHaveLength(2)
         expect(gyms).toEqual([

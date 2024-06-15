@@ -14,7 +14,7 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
 
   async findById(id: string) {
     const checkIn = this.items.find((item) => item.id == id)
-      console.log(checkIn)
+    
       if(!checkIn){
         return null
       }
