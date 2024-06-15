@@ -14,6 +14,13 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: |
-          rm -rf node_modules package-lock.json
-      - run: npm ci
+          if [ -f package-lock.json ]; then
+            rm -rf node_modules package-lock.json
+          fi
+      - run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
       - run: npm run test
